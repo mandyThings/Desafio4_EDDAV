@@ -116,33 +116,11 @@ class NeuronalNetwork:
   def fit(self, X, y, learning_rate=0.1):
     # Por cada vector del conjunto de inputs, se ajusta el modelo
     for (i, x) in enumerate(X):
-      print('\n------------------------------------------------------------------')
-      print('Current fit iteration:', i)
-      print(f'Expected value at this current fit iteration: {y[i]}')
-
       self.predict(x)
-
-      print('\nNetwork Information: \n')
-      show_predict_info(self, x, 4)
 
       deltas = self._calculate_deltas(y[i])
 
-      print('Deltas information: ')
-      print('Output layer deltas: ')
-      for (i, node) in enumerate(self.output_layer):
-          print(f'\t{node.id}: {deltas[-1][i]}')
-
-      print('\nHidden layers deltas: ')
-      for (i, hidden_deltas) in enumerate(deltas[:-1]):
-        print('\nLayer:', i)
-        
-        for (j, node) in enumerate(self.hidden_layers[i]):
-          print(f'\t{node.id}: {hidden_deltas[j]}')
-
       self._update_weights(deltas, learning_rate)
-
-      print('\nNetwork Information after update the weights: \n')
-      show_neuronal_network(self, 2)
 
   
   def predict(self, input):
