@@ -116,23 +116,25 @@ Para realizar la separación de datos se implementó la siguiente función, la c
 
     import random
 
-    def train_test_split(X, y, test_size=0.3):
-        # Inicialización de listas
-        X_train, X_test, y_train, y_test = (list(),list(),list(),list())
-        # Se define tamaño de entrenamiento (70%)
-        size_train = round(len(X)*(1 - test_size))
-        # Se genera una lista con los indices del 70% de datos aleatorios.
-        random_range = random.sample(range(len(X)), size_train)
+    def get_values_dataset():
+        df = pd.read_csv('data.csv', index_col=0)
 
-        for index in range(len(X)):
-            if index in random_range:
-                X_train.append( X[index] )
-                y_train.append( y[index] )
-            else:
-                X_test.append( X[index] )
-                y_test.append( y[index] )
+        # Crear variables
+        X = df.drop(labels=['song_title', 'artist', 'target'], axis=1)
+        y = df['target']
 
-        return (X_train, X_test, y_train, y_test)
+        cols_to_normalize = ['duration_ms', 'key', 'tempo', 'time_signature']
+
+        # Normalizar el conjunto de entrada
+        for col in cols_to_normalize:
+          X[col] = df[col] / df[col].max()
+
+        # Se normaliza por el min al tener valores negativos.
+        X.loudness = X.loudness / X.loudness.min()
+
+        return (X.values.tolist(), y.values.tolist())
+
+            return (X_train, X_test, y_train, y_test)
         
 ### Modelo de entrenamiento
 Se crea la red neuronal, se agregan las capas y se inicializan los datos.
