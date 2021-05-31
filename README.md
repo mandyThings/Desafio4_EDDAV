@@ -68,6 +68,10 @@ Para crear las conexiones entre las capas ingresadas, se utilizan las funciones 
 Para realizar las predicciones se copian los valores del input en los nodos de la capa de entrada, se calcula los valores de las capas ocultas y se calcula la salida sin aplicar la funcion de activación al valor.
 
     def predict(self, input):
+    
+Luego para cada se agregan todas las predicciones a una lista y se retornan al main con:
+    
+    def predictions(self, X_train):
           
 Para entrenar el modelo, se genera la prediccion de los valores, se calcula la diferencia (delta) con el valor esperado y se actualizan los pesos según corresponda.
 
@@ -148,8 +152,7 @@ Se generan las predicciones y se almacenan en una lista para comparar con las te
     predictions = nn.predictions(X_test)
     
 ## Conclusiones
-
-
-  
-
-    
+Si comparamos los resultados generados en las predicciones de nuestro perceptrón, obtenemos una precisión del 50% de los datos.
+Haciendo un analisis de los resultados, podemos ver que los datos de las predicciones son muy similares, y haciendo el ruteo de
+la red podemos ver como se van ajustando los pesos. Finalmente, nuestra red no es capaz de predecir correctamente si al usuario
+le gusta una canción con los datos extraidos desde el dataset a pesar de intentar con distintas capas y tamaños de testeo.

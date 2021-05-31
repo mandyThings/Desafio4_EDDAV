@@ -80,13 +80,13 @@ def show_neuronal_network(network, verbose_level=1):
     print()
 
 def show_predict_info(network, x, verbose_level=1):
-  y = nn.predict(x)
+  y = network.predict(x)
 
   print(f'Value to predict: {x}')
   print(f'Predicted value: {y}\n')
   print('Network status information after predicting: \n')
 
-  show_neuronal_network(nn, verbose_level)
+  show_neuronal_network(network, verbose_level)
 
 class NeuronalNetwork:
   def __init__(self, cant_input, cant_output, function):
@@ -139,10 +139,10 @@ class NeuronalNetwork:
 
     return [node.value for node in self.output_layer]
 
-  def predictions(self, X_train):
+  def predictions(self, X_t):
     predictions = []
     # Se predice la salida para cada dato de entrenamiento y se retorna en formato lista
-    for x in X_train:
+    for x in X_t:
       predictions.append( self.predict(x) )
 
     return predictions
@@ -180,18 +180,24 @@ class NeuronalNetwork:
 
   def _update_weights(self, deltas, learning_rate):
     # Se actualizan los pesos de la primera capa oculta
-    self._update_layer_weight(self.input_layer, 0, deltas, learning_rate)
+    self._update_layer_weight(self.input_layer, 0, deltas, learning_rate, True)
 
     # Se actualizan los pesos de la segunda capa oculta
     for (i, layer) in enumerate(self.hidden_layers):
       self._update_layer_weight(layer, i + 1, deltas, learning_rate)
 
 
-  def _update_layer_weight(self, layer, i_delta, deltas, learning_rate):
+  def _update_layer_weight(self, layer, i_delta, deltas, learning_rate, apply_function=False):
     for (i, node) in enumerate(layer):
       for (j, next) in enumerate(node.next_layer):
-        new_weight = -learning_rate * deltas[i_delta][j] * next.value
-        next.weights[i] = new_weight
+        value = node.value
+
+        if apply_function:
+          value = node.funct(value)
+
+        new_weight = -learning_rate * deltas[i_delta][j] * value
+
+        next.weights[i] += new_weight
 
 
   def _calculate_deltas(self, y):
@@ -235,9 +241,9 @@ def train_test_split(X, y, test_size=0.3):
     for index in range(len(X)):
         if index in random_range:
             X_train.append( X[index] )
-            y_train.append( y[index] )
+            y_train.append( [y[index]] )
         else:
             X_test.append( X[index] )
-            y_test.append( y[index] )
+            y_test.append( [y[index]] )
     
     return (X_train, X_test, y_train, y_test)
