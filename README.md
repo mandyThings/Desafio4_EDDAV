@@ -156,3 +156,6 @@ Si comparamos los resultados generados en las predicciones de nuestro perceptró
 Haciendo un analisis de los resultados, podemos ver que los datos de las predicciones son muy similares, y haciendo el ruteo de
 la red podemos ver como se van ajustando los pesos. Finalmente, nuestra red no es capaz de predecir correctamente si al usuario
 le gusta una canción con los datos extraidos desde el dataset a pesar de intentar con distintas capas y tamaños de testeo.
+
+## Video
+En el siguiente [link](https://drive.google.com/drive/folders/18j8_XpWpYjkRARHtlxg8IixK0LkxsiCk?usp=sharing) se encuentra el video explicativo del desafío.
